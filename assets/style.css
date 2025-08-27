@@ -1,0 +1,85 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Story+Script&display=swap');
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Story Script', cursive;
+    background: linear-gradient(135deg, #f06, #4a90e2);
+    
+}
+
+.container {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255,255,255,0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            margin-top: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+    h1{
+        font-size: 3rem;
+    }
+    .task-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .task-input{
+        width: 400px;
+    }
+    .task-input, .task-priority, .add-task-button {
+      padding: 10px;
+      border: 3px solid #ca05f6;
+      background-color: rgba(177, 15, 80, 0.164);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .add-task-button {
+      background: #4a90e2;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .add-task-button:hover {
+      background: #357abd;
+    }
+    .filter {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .filter select {
+      padding: 8px;
+      border-radius: 8px;
+      border: 3px solid #ca05f6;
+      background-color: rgba(177, 15, 80, 0.164);
+    }
+    ul {
+      list-style: none;
+    }
+    li {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .priority-low { border-left: 5px solid green; }
+    .priority-medium { border-left: 5px solid orange; }
+    .priority-high { border-left: 5px solid red; }
