@@ -137,4 +137,10 @@ ul {
     border-radius: 15px;
     color: white;
     padding: 5px 10px;
+    cursor: pointer;
+}
+.edit-btn.completed {
+  background: gray;
+  color: white;
+  cursor: not-allowed;
 }

@@ -4,15 +4,17 @@ const taskPriority = document.querySelector(".task-priority");
 const addBtn = document.querySelector(".add-task-button");
 const taskList = document.getElementById("task-list");
 const filterPriority = document.getElementById("filter-priority");
-let toDoList = new ToDoList();
+const deleteBtn = document.querySelector(".delete");
+const toDoList = new ToDoList();
 let editingTask = null;
 const cancelBtn = document.createElement("button");
 cancelBtn.textContent = "Cancel";
 cancelBtn.style.display = "none";
-cancelBtn.className = "cancel-edit"; 
+cancelBtn.className = "cancel-edit";
 addBtn.insertAdjacentElement("afterend", cancelBtn);
 
-const displayTasks = (filter = "all") => {
+const displayTasks = () => {
+  const filter = filterPriority.value;
   const tasks = toDoList.getTasks();
   const filtered =
     filter === "all" ? tasks : tasks.filter((t) => t.getPriority() === filter);
@@ -68,7 +70,7 @@ addBtn.addEventListener("click", (e) => {
   }
 
   taskInput.value = "";
-  displayTasks(filterPriority.value);
+  displayTasks();
 });
 cancelBtn.addEventListener("click", () => {
   editingTask = null;
@@ -78,7 +80,7 @@ cancelBtn.addEventListener("click", () => {
 });
 
 filterPriority.addEventListener("change", () => {
-  displayTasks(filterPriority.value);
+  displayTasks();
 });
 
 taskList.addEventListener("click", (e) => {
@@ -92,20 +94,25 @@ taskList.addEventListener("click", (e) => {
 
   if (target.classList.contains("task-checkbox") || target.tagName === "SPAN") {
     task.setCompleted(!task.isCompleted());
+    if (task.isCompleted()) {
+      editBtn.classList.add("completed");
+    } else {
+      editBtn.classList.remove("completed");
+    }
     toDoList.saveTasks();
-    displayTasks(filterPriority.value);
-  }
-
-  if (target.classList.contains("delete")) {
-    toDoList.deleteTask(taskId);
     displayTasks();
   }
-  if (target.classList.contains("edit-task")) {
-    taskInput.value = task.getName();
-    taskPriority.value = task.getPriority();
-    editingTask = task;
-    addBtn.textContent = "Save";
-    cancelBtn.style.display = "inline-block";
-  }
 });
+deleteBtn.addEventListener("click", () => {
+  toDoList.deleteTask(taskId);
+  displayTasks();
+});
+editBtn.addEventListener("click", () => {
+  taskInput.value = task.getName();
+  taskPriority.value = task.getPriority();
+  editingTask = task;
+  addBtn.textContent = "Save";
+  cancelBtn.style.display = "inline-block";
+});
+
 displayTasks();
