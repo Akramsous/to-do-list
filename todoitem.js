@@ -10,4 +10,34 @@ export default class TodoItem {
     this.#priority = priority;
     this.#completed = completed;
   }
+  getId() {
+    return this.#id;
+  }
+  getName() {
+    return this.#name;
+  }
+  getPriority() {
+    return this.#priority;
+  }
+  isCompleted() {
+    return this.#completed;
+  }
+  setName(name) {
+    this.#name = name;
+  }
+  setPriority(priority) {
+    this.#priority = priority;
+  }
+
+  setCompleted(completed) {
+    this.#completed = completed;
+  }
+  toJSON() {
+    return {
+      id: this.#id,
+      name: this.#name,
+      priority: this.#priority,
+      completed: this.#completed,
+    };
+  }
 }

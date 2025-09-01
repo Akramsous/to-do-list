@@ -1,35 +1,38 @@
+import ToDoList from "./todolist.js";
 const taskInput = document.querySelector(".task-input");
 const taskPriority = document.querySelector(".task-priority");
 const addBtn = document.querySelector(".add-task-button");
 const taskList = document.getElementById("task-list");
 const filterPriority = document.getElementById("filter-priority");
-let tasks = [];
+let toDoList = new ToDoList();
+
 const displayTasks = (filter = "all") => {
+  const tasks = toDoList.getTasks();
   const filtered =
-    filter === "all" ? tasks : tasks.filter((t) => t.priority === filter);
+    filter === "all" ? tasks : tasks.filter((t) => t.getPriority() === filter);
+
   taskList.innerHTML = "";
-  filtered.forEach(({ id, name, priority, completed }) => {
+  filtered.forEach((task) => {
     const li = document.createElement("li");
-    li.className = `task-item priority-${priority}`;
-    li.id = id;
+    li.className = `task-item priority-${task.getPriority()}`;
+    li.id = task.getId();
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = id;
     checkbox.className = "task-checkbox";
-    checkbox.checked = completed;
+    checkbox.checked = task.isCompleted();
 
     const spanTask = document.createElement("span");
-    spanTask.className = `task${completed ? " completed" : ""}`;
-    spanTask.textContent = name;
+    spanTask.className = `task${task.isCompleted() ? " completed" : ""}`;
+    spanTask.textContent = task.getName();
 
     const spanPriority = document.createElement("span");
-    spanPriority.textContent = priority.toUpperCase();
+    spanPriority.textContent = task.getPriority().toUpperCase();
 
     const editBtn = document.createElement("button");
     editBtn.className = "edit-task";
     editBtn.textContent = "Edit";
-    if (completed) editBtn.disabled = true;
+    if (task.isCompleted()) editBtn.disabled = true;
 
     const deleteBtn = document.createElement("button");
     deleteBtn.className = "delete";
@@ -44,37 +47,18 @@ const displayTasks = (filter = "all") => {
     taskList.appendChild(li);
   });
 };
-if (localStorage.getItem("tasks") != null) {
-  tasks = JSON.parse(localStorage.getItem("tasks"));
-  displayTasks();
-}
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-addBtn.addEventListener("click", (e) => addTask(e));
-const addTask = (e) => {
-  e.preventDefault();
 
-  if (taskInput.value.trim() === "") {
-    alert("plese enter a task");
-    return;
-  }
-
-  const task = {
-    id: Date.now(),
-    name: taskInput.value.trim(),
-    priority: taskPriority.value,
-    completed: false,
-  };
-  tasks.push(task);
-  saveTasks();
+addBtn.addEventListener("click", (e) => {
+  const taskName = taskInput.value;
+  const priority = taskPriority.value;
+  toDoList.addTask(e, taskName, priority);
   taskInput.value = "";
-  displayTasks();
-};
-filterPriority.addEventListener("change", () => {
   displayTasks(filterPriority.value);
 });
 
+filterPriority.addEventListener("change", () => {
+  displayTasks(filterPriority.value);
+});
 
 taskList.addEventListener("click", (e) => {
   const target = e.target;
@@ -83,17 +67,20 @@ taskList.addEventListener("click", (e) => {
   if (!li) return;
 
   const taskId = li.id;
-  const task = tasks.find((t) => t.id == taskId);
+  const task = toDoList.getTasks().find((t) => t.getId() == taskId);
 
-  if (target.classList.contains("task-checkbox") || target.tagName === "SPAN") {
-    task.completed = !task.completed;
-    saveTasks();
-    displayTasks(filterpriority.value);
+  if (target.classList.contains("task-checkbox") || target.tagName === "SPAN"||) {
+    task.setCompleted(!task.isCompleted());
+    toDoList.saveTasks();
+    displayTasks(filterPriority.value);
   }
 
   if (target.classList.contains("delete")) {
-    tasks = tasks.filter((t) => t.id != taskId);
-    saveTasks();
-    displayTasks(filterPriority.value);
+    toDoList.deleteTask(taskId);
+    displayTasks();
+  }
+  if (target.classList.contains("edit-task")) {
+    
   }
 });
+displayTasks();
