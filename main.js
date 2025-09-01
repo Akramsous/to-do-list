@@ -5,6 +5,12 @@ const addBtn = document.querySelector(".add-task-button");
 const taskList = document.getElementById("task-list");
 const filterPriority = document.getElementById("filter-priority");
 let toDoList = new ToDoList();
+let editingTask = null;
+const cancelBtn = document.createElement("button");
+cancelBtn.textContent = "Cancel";
+cancelBtn.style.display = "none";
+cancelBtn.className = "cancel-edit"; 
+addBtn.insertAdjacentElement("afterend", cancelBtn);
 
 const displayTasks = (filter = "all") => {
   const tasks = toDoList.getTasks();
@@ -51,9 +57,24 @@ const displayTasks = (filter = "all") => {
 addBtn.addEventListener("click", (e) => {
   const taskName = taskInput.value;
   const priority = taskPriority.value;
-  toDoList.addTask(e, taskName, priority);
+  if (editingTask) {
+    editingTask.setName(taskName);
+    editingTask.setPriority(priority);
+    editingTask = null;
+    addBtn.textContent = "Add Task";
+    cancelBtn.style.display = "none";
+  } else {
+    toDoList.addTask(e, name, priority);
+  }
+
   taskInput.value = "";
   displayTasks(filterPriority.value);
+});
+cancelBtn.addEventListener("click", () => {
+  editingTask = null;
+  taskInput.value = "";
+  addBtn.textContent = "Add Task";
+  cancelBtn.style.display = "none";
 });
 
 filterPriority.addEventListener("change", () => {
@@ -69,7 +90,7 @@ taskList.addEventListener("click", (e) => {
   const taskId = li.id;
   const task = toDoList.getTasks().find((t) => t.getId() == taskId);
 
-  if (target.classList.contains("task-checkbox") || target.tagName === "SPAN"||) {
+  if (target.classList.contains("task-checkbox") || target.tagName === "SPAN") {
     task.setCompleted(!task.isCompleted());
     toDoList.saveTasks();
     displayTasks(filterPriority.value);
@@ -80,7 +101,11 @@ taskList.addEventListener("click", (e) => {
     displayTasks();
   }
   if (target.classList.contains("edit-task")) {
-    
+    taskInput.value = task.getName();
+    taskPriority.value = task.getPriority();
+    editingTask = task;
+    addBtn.textContent = "Save";
+    cancelBtn.style.display = "inline-block";
   }
 });
 displayTasks();

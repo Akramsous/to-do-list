@@ -47,7 +47,7 @@ h1 {
 
 .task-input,
 .task-priority,
-.add-task-button {
+.add-task-button ,.cancel-edit {
     padding: 10px;
     border: 3px solid #ca05f6;
     background-color: rgba(177, 15, 80, 0.164);
@@ -56,11 +56,11 @@ h1 {
 }
 
 .task-priority,
-.add-task-button {
+.add-task-button, .cancel-edit {
     border-radius: 20px;
 }
 
-.add-task-button {
+.add-task-button ,.cancel-edit{
     background: #4a90e2;
     color: #fff;
     border: none;
@@ -68,7 +68,7 @@ h1 {
     transition: background 0.3s;
 }
 
-.add-task-button:hover {
+.add-task-button:hover ,.cancel-edit:hover {
     background: #357abd;
 }
 
