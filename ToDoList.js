@@ -25,7 +25,7 @@ export default class ToDoList {
       JSON.stringify(this.#tasks.map((t) => t.toJSON()))
     );
   }
-  loasdTasks() {
+  loadTasks() {
     if (localStorage.getItem("tasks") != null) {
       this.#tasks = JSON.parse(localStorage.getItem("tasks")).map(
         (t) => new item(t.id, t.name, t.priority, t.completed)
