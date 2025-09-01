@@ -1,8 +1,7 @@
 const taskinput= document.querySelector('.task-input');
 const taskpriority= document.querySelector('.task-priority');
 const addbtn= document.querySelector('.add-task-button');
-const tasklist= document.getElementById('task-list');
-const filterpriority= document.getElementById('filter-priority');
+
 let tasks=[];
 if (localStorage.getItem('tasks') != null){
     tasks=JSON.parse(localStorage.getItem('tasks'));
