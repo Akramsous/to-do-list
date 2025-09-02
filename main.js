@@ -101,6 +101,7 @@ addBtn.addEventListener("click", (e) => {
     editingTask = null;
     addBtn.textContent = "Add Task";
     cancelBtn.style.display = "none";
+    toDoList.saveTasks();
   } else toDoList.addTask(e, taskName, priority);
   taskInput.value = "";
   
