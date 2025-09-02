@@ -13,11 +13,14 @@ cancelBtn.className = "cancel-edit";
 cancelBtn.style.display = "none";
 addBtn.insertAdjacentElement("afterend", cancelBtn);
 
-cancelBtn.addEventListener("click", () => {
+cancelBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   editingTask = null;
   taskInput.value = "";
   addBtn.textContent = "Add Task";
   cancelBtn.style.display = "none";
+  taskInput.required = true;
+  taskPriority.required = true;
 });
 
 const displayTasks = () => {
@@ -70,6 +73,8 @@ const displayTasks = () => {
       taskPriority.value = task.getPriority();
       addBtn.textContent = "Save";
       cancelBtn.style.display = "inline-block";
+      taskInput.required = false;
+      taskPriority.required = false;
     });
 
     li.appendChild(checkbox);
@@ -84,8 +89,12 @@ const displayTasks = () => {
 displayTasks();
 
 addBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   const taskName = taskInput.value;
   const priority = taskPriority.value;
+  taskInput.required = true;
+  taskPriority.required = true;
+
   if (editingTask) {
     editingTask.setName(taskName);
     editingTask.setPriority(priority);
@@ -94,6 +103,7 @@ addBtn.addEventListener("click", (e) => {
     cancelBtn.style.display = "none";
   } else toDoList.addTask(e, taskName, priority);
   taskInput.value = "";
+  
   displayTasks();
 });
 
