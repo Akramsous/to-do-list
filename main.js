@@ -4,14 +4,21 @@ const taskPriority = document.querySelector(".task-priority");
 const addBtn = document.querySelector(".add-task-button");
 const taskList = document.getElementById("task-list");
 const filterPriority = document.getElementById("filter-priority");
-const deleteBtn = document.querySelector(".delete");
+
 const toDoList = new ToDoList();
 let editingTask = null;
 const cancelBtn = document.createElement("button");
 cancelBtn.textContent = "Cancel";
-cancelBtn.style.display = "none";
 cancelBtn.className = "cancel-edit";
+cancelBtn.style.display = "none";
 addBtn.insertAdjacentElement("afterend", cancelBtn);
+
+cancelBtn.addEventListener("click", () => {
+  editingTask = null;
+  taskInput.value = "";
+  addBtn.textContent = "Add Task";
+  cancelBtn.style.display = "none";
+});
 
 const displayTasks = () => {
   const filter = filterPriority.value;
@@ -40,11 +47,30 @@ const displayTasks = () => {
     const editBtn = document.createElement("button");
     editBtn.className = "edit-task";
     editBtn.textContent = "Edit";
-    if (task.isCompleted()) editBtn.disabled = true;
+    if (task.isCompleted()) {
+      editBtn.classList.add("completed");
+    }
 
     const deleteBtn = document.createElement("button");
     deleteBtn.className = "delete";
     deleteBtn.textContent = "X";
+    deleteBtn.addEventListener("click", (e) => {
+      toDoList.deleteTask(task.getId());
+      displayTasks();
+    });
+    checkbox.addEventListener("change", () => {
+      task.setCompleted(checkbox.checked);
+      toDoList.saveTasks();
+      displayTasks();
+    });
+    editBtn.addEventListener("click", () => {
+      if (task.isCompleted()) return;
+      editingTask = task;
+      taskInput.value = task.getName();
+      taskPriority.value = task.getPriority();
+      addBtn.textContent = "Save";
+      cancelBtn.style.display = "inline-block";
+    });
 
     li.appendChild(checkbox);
     li.appendChild(spanTask);
@@ -55,6 +81,7 @@ const displayTasks = () => {
     taskList.appendChild(li);
   });
 };
+displayTasks();
 
 addBtn.addEventListener("click", (e) => {
   const taskName = taskInput.value;
@@ -65,54 +92,11 @@ addBtn.addEventListener("click", (e) => {
     editingTask = null;
     addBtn.textContent = "Add Task";
     cancelBtn.style.display = "none";
-  } else {
-    toDoList.addTask(e, name, priority);
-  }
-
+  } else toDoList.addTask(e, taskName, priority);
   taskInput.value = "";
   displayTasks();
-});
-cancelBtn.addEventListener("click", () => {
-  editingTask = null;
-  taskInput.value = "";
-  addBtn.textContent = "Add Task";
-  cancelBtn.style.display = "none";
 });
 
 filterPriority.addEventListener("change", () => {
   displayTasks();
 });
-
-taskList.addEventListener("click", (e) => {
-  const target = e.target;
-
-  const li = target.closest("li.task-item");
-  if (!li) return;
-
-  const taskId = li.id;
-  const task = toDoList.getTasks().find((t) => t.getId() == taskId);
-
-  if (target.classList.contains("task-checkbox") || target.tagName === "SPAN") {
-    task.setCompleted(!task.isCompleted());
-    if (task.isCompleted()) {
-      editBtn.classList.add("completed");
-    } else {
-      editBtn.classList.remove("completed");
-    }
-    toDoList.saveTasks();
-    displayTasks();
-  }
-});
-deleteBtn.addEventListener("click", () => {
-  toDoList.deleteTask(taskId);
-  displayTasks();
-});
-editBtn.addEventListener("click", () => {
-  taskInput.value = task.getName();
-  taskPriority.value = task.getPriority();
-  editingTask = task;
-  addBtn.textContent = "Save";
-  cancelBtn.style.display = "inline-block";
-});
-
-displayTasks();
