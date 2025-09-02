@@ -12,7 +12,7 @@ addBtn.addEventListener("click", (e) => {
   e.preventDefault();
   const taskName = taskInput.value.trim();
   const priority = taskPriority.value;
-  if(taskName.trim()==="")
+  if(taskName ==="")
   {
     alert("Task name cannot be empty");
     return;
