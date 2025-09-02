@@ -131,7 +131,7 @@ ul {
     transition: 0.2s;
     
 }
-.delete, .edit-task {
+.delete, .edit-task , .save-btn , .cancel-btn {
     border:2px solid #ca05f6;
     background: linear-gradient(135deg, #f06, #4a90e2);
     border-radius: 15px;
@@ -143,4 +143,12 @@ ul {
   background: gray;
   color: white;
   cursor: not-allowed;
+}
+.d-none{
+    display: none;
+}
+.editting-span{
+    border: 1px solid #000;
+    padding: 4px;
+    border-radius: 4px;
 }
