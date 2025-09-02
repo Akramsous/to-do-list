@@ -138,6 +138,7 @@ ul {
     color: white;
     padding: 5px 10px;
     cursor: pointer;
+    margin: 4px;;
 }
 .edit-task.completed {
   background: gray;

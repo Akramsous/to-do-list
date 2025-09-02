@@ -21,7 +21,7 @@ export default class ToDoList {
     }
     this.saveTasks();
   }
- //save tasks function which saves tasks to local storage
+  //save tasks function which saves tasks to local storage
   saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(this.#tasks));
   }
@@ -33,7 +33,7 @@ export default class ToDoList {
       );
     }
   }
- //delete task function which deletes task from #tasks array by id then saves changes to local storage
+  //delete task function which deletes task from #tasks array by id then saves changes to local storage
   deleteTask(id) {
     this.#tasks = this.#tasks.filter((t) => t.getId() != id);
     this.saveTasks();
@@ -104,11 +104,15 @@ export default class ToDoList {
         deleteBtn.classList.add("d-none");
         spanTask.contentEditable = "plaintext-only";
         spanTask.focus();
-        spanTask.classList.add("editting-span")
+        spanTask.classList.add("editting-span");
       });
       //save button event listener
       saveBtn.addEventListener("click", () => {
-        this.editTask(task.getId(), spanTask.textContent.trim(), task.getPriority());
+        this.editTask(
+          task.getId(),
+          spanTask.textContent.trim(),
+          task.getPriority()
+        );
         saveBtn.classList.add("d-none");
         cancelBtn.classList.add("d-none");
         editBtn.classList.remove("d-none");
@@ -127,8 +131,11 @@ export default class ToDoList {
         spanTask.classList.remove("editting-span");
         spanTask.contentEditable = false;
       });
-     //append all elements to li
-      li.append(checkBox, spanTask, saveBtn, cancelBtn, editBtn, deleteBtn);
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "button-container";
+      buttonContainer.append(saveBtn, cancelBtn, editBtn, deleteBtn);
+      //append all elements to li
+      li.append(checkBox, spanTask, buttonContainer);
       //append li into ul list
       taskList.appendChild(li);
     });
