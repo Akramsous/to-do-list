@@ -107,7 +107,14 @@ export default class ToDoList {
         spanTask.classList.add("editting-span");
       });
       //save button event listener
-      saveBtn.addEventListener("click", () => {
+      saveBtn.addEventListener("click", (e) => {
+        const li = e.target.closest("li");
+        const spanTask = li.querySelector(".task");
+        const saveBtn = li.querySelector(".save-btn");
+        const cancelBtn = li.querySelector(".cancel-btn");
+        const editBtn = li.querySelector(".edit-task");
+        const deleteBtn = li.querySelector(".delete");
+        
         this.editTask(
           task.getId(),
           spanTask.textContent.trim(),
@@ -117,12 +124,18 @@ export default class ToDoList {
         cancelBtn.classList.add("d-none");
         editBtn.classList.remove("d-none");
         deleteBtn.classList.remove("d-none");
-        spanTask.contentEditable = false;
         spanTask.classList.remove("editting-span");
-        this.displayTasks();
+        spanTask.contentEditable = false;
+        
       });
       //cancel button event listener
-      cancelBtn.addEventListener("click", () => {
+      cancelBtn.addEventListener("click", (e) => {
+        const li = e.target.closest("li");
+        const spanTask = li.querySelector(".task");
+        const saveBtn = li.querySelector(".save-btn");
+        const cancelBtn = li.querySelector(".cancel-btn");
+        const editBtn = li.querySelector(".edit-task");
+        const deleteBtn = li.querySelector(".delete");
         spanTask.textContent = task.getName();
         saveBtn.classList.add("d-none");
         cancelBtn.classList.add("d-none");
