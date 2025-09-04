@@ -46,6 +46,7 @@ export default class ToDoList {
       this.saveTasks();
     }
   }
+
   // display tasks and while adding tasks it also adds event listeners
   displayTasks() {
     const filterPriority = document.getElementById("filter-priority");
@@ -56,36 +57,34 @@ export default class ToDoList {
       filterPriority.value === "all"
         ? this.#tasks
         : this.#tasks.filter((t) => t.getPriority() === filterPriority.value);
-
+    const createEl = (tag, btnClass, text = "") => {
+      const btn = document.createElement(tag);
+      btn.className = btnClass;
+      if (text) btn.textContent = text;
+      return btn;
+    };
     tasks.forEach((task) => {
-      const li = document.createElement("li");
-      li.className = `task-item priority-${task.getPriority()}`;
+      const li = createEl("li", `task-item priority-${task.getPriority()}`);
       //checkbox
-      const checkBox = document.createElement("input");
+      const checkBox = createEl("input", "task-checkbox");
       checkBox.type = "checkbox";
-      checkBox.className = "task-checkbox";
       checkBox.checked = task.isCompleted();
       //task name span
-      const spanTask = document.createElement("span");
-      spanTask.className = `task${task.isCompleted() ? " completed" : ""}`;
-      spanTask.textContent = task.getName();
+      const spanTask = createEl(
+        "span",
+        `task${task.isCompleted() ? " completed" : ""}`,
+        task.getName()
+      );
       //save button creating
-      const saveBtn = document.createElement("button");
-      saveBtn.textContent = "Save";
-      saveBtn.className = "save-btn d-none";
+      const saveBtn = createEl("button", "save-btn d-none", "Save");
       //cancel button creating
-      const cancelBtn = document.createElement("button");
-      cancelBtn.textContent = "Cancel";
-      cancelBtn.className = "cancel-btn d-none";
+      const cancelBtn = createEl("button", "cancel-btn d-none", "Cancel");
       //edit button creating
-      const editBtn = document.createElement("button");
-      editBtn.className = "edit-task";
-      editBtn.textContent = "Edit";
+      const editBtn = createEl("button", "edit-task", "Edit");
       if (task.isCompleted()) editBtn.classList.add("completed");
       //delete button creating
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "delete";
-      deleteBtn.textContent = "X";
+      const deleteBtn = createEl("button", "delete", "X");
+
       deleteBtn.addEventListener("click", () => {
         this.deleteTask(task.getId());
         this.displayTasks();
@@ -114,7 +113,7 @@ export default class ToDoList {
         const cancelBtn = li.querySelector(".cancel-btn");
         const editBtn = li.querySelector(".edit-task");
         const deleteBtn = li.querySelector(".delete");
-        
+
         this.editTask(
           task.getId(),
           spanTask.textContent.trim(),
@@ -126,7 +125,6 @@ export default class ToDoList {
         deleteBtn.classList.remove("d-none");
         spanTask.classList.remove("editting-span");
         spanTask.contentEditable = false;
-        
       });
       //cancel button event listener
       cancelBtn.addEventListener("click", (e) => {
