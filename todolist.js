@@ -21,7 +21,7 @@ export default class ToDoList {
     }
     this.saveTasks();
   }
-  //save tasks function which saves tasks to local storage
+
   saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(this.#tasks));
   }
